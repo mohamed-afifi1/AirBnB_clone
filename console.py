@@ -137,7 +137,35 @@ class HBNBCommand(cmd.Cmd):
                         pass  # fine, stay a string then
                 setattr(storage.all()[key], cls_attr, cls_value)
                 storage.all()[key].save()
-
+    def do_count(self, line):
+        """Counts the instances of a class.
+        """
+        words = line.split(' ')
+        if not words[0]:
+            print("** class name missing **")
+        elif words[0] not in storage.classes():
+            print("** class doesn't exist **")
+        else:
+            matches = [
+                k for k in storage.all() if k.startswith(
+                    words[0] + '.')]
+            print(len(matches))
+    
+    def _precmd(self, line):
+        """Intercepts commands to test for class.syntax()"""
+        match = re.search(r"^(\w*)\.(\w+)(?:\(([^)]*)\))$", line)
+        if not match:
+            return line
+        cls_name = match.group(1)
+        method = match.group(2)
+        args = match.group(3)
+        uid_and_args = re.search('^"([^"]*)"(?:, (.*))?$', args)
+        if uid_and_args:
+            uid = uid_and_args.group(1)
+            attr_or_dict = uid_and_args.group(2)
+        else:
+            uid = args
+            attr_or_dict = False
     
 
 
