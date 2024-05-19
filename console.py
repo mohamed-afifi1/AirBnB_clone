@@ -151,21 +151,16 @@ class HBNBCommand(cmd.Cmd):
                     words[0] + '.')]
             print(len(matches))
     
-    def _precmd(self, line):
-        """Intercepts commands to test for class.syntax()"""
-        match = re.search(r"^(\w*)\.(\w+)(?:\(([^)]*)\))$", line)
-        if not match:
-            return line
-        cls_name = match.group(1)
-        method = match.group(2)
-        args = match.group(3)
-        uid_and_args = re.search('^"([^"]*)"(?:, (.*))?$', args)
-        if uid_and_args:
-            uid = uid_and_args.group(1)
-            attr_or_dict = uid_and_args.group(2)
-        else:
-            uid = args
-            attr_or_dict = False
+    def precmd(self, arg):
+        """parses for command inputs"""
+        if '.' in arg and '(' in arg and ')' in arg:
+            cls = arg.split('.')
+            cnd = cls[1].split('(')
+            args = cnd[1].split(')')
+            if cls[0] in HBNBCommand.l_classes and cnd[0] in HBNBCommand.l_c:
+                arg = cnd[0] + ' ' + cls[0] + ' ' + args[0]
+        return arg
+    
     
 
 
