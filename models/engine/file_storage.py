@@ -32,11 +32,11 @@ class FileStorage:
         """Reloads the stored objects"""
         if not os.path.isfile(FileStorage.__file_path):
             return
-        with open(FileStorage.__file_path, 'r', encoding="utf-8") as file:
-            objects_dict = json.load(file)
-            for k, v in objects_dict.items():
-                objects_dict[k] = self.classes()[v["__class__"]](**v)
-            FileStorage.__objects = objects_dict
+        with open(FileStorage.__file_path, "r", encoding="utf-8") as f:
+            obj_dict = json.load(f)
+            obj_dict = {k: self.classes()[v["__class__"]](**v)
+                        for k, v in obj_dict.items()}
+            FileStorage.__objects = obj_dict
 
     def classes(self):
         """Returns a dictionary of valid classes and their references"""
