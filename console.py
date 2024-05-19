@@ -151,13 +151,19 @@ class HBNBCommand(cmd.Cmd):
                     words[0] + '.')]
             print(len(matches))
     
+
+    list_classes = ['BaseModel', 'User', 'Amenity',
+                    'Place', 'City', 'State', 'Review']
+
+    list_cmds = ['create', 'show', 'update', 'all', 'destroy', 'count']
+    
     def precmd(self, arg):
         """parses for command inputs"""
         if '.' in arg and '(' in arg and ')' in arg:
             cls = arg.split('.')
             cnd = cls[1].split('(')
             args = cnd[1].split(')')
-            if cls[0] in HBNBCommand.l_classes and cnd[0] in HBNBCommand.l_c:
+            if cls[0] in HBNBCommand.list_classes and cnd[0] in HBNBCommand.list_cmds:
                 arg = cnd[0] + ' ' + cls[0] + ' ' + args[0]
         return arg
     
