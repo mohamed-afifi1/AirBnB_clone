@@ -17,6 +17,11 @@ class HBNBCommand(cmd.Cmd):
     def default(self, line):
         """Catch commands if nothing else matches then."""
         self._precmd(line)
+    def emptyline(self):
+        """Doesn't do anything on ENTER.
+        """
+        pass
+    
 
 
 if __name__ == "__main__":
